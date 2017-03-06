@@ -20,7 +20,7 @@ For vim-plug:
 
 For dein.vim:
 ```
-   call dein#add('JoZie/denite-make')'
+   call dein#add('JoZie/denite-make')
 ```
 
 ## Configuration ##
