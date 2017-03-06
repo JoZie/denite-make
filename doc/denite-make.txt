@@ -1,0 +1,55 @@
+*denite-make.txt*                              An async make source for |denite|
+
+Version: 0.1
+Author:  <Johannes Ziegenbalg at gmail.com>
+License: MIT license
+
+CONTENTS 						*denite-make-contents*
+
+1. Introduction			|denite-make-intro|
+2. Install 			|denite-make-install|
+3. Configuration 		|denite-make-config|
+4. Usage 			|denite-make-usage|
+5. Feedback 			|denite-make-feedback|
+
+==============================================================================
+INTRODUCTION 						*denite-make-intro*
+
+|denite-make| is an source for *dein.nvim*
+It provdes an interface to GNU make. Therefore it utilizes the capabilities
+of *denite.nvim* to execute `make` in an asynchronously and display the output
+in the *denite* buffer.
+
+==============================================================================
+INSTALL 						*denite-make-install*
+
+Note: |denite-make| requires an existing installation of *dein.nvim* which can
+be found at https://github.com//Shougo/denite.nvim.
+
+For installation just add the following line to your (N)Vim startup file,
+depending on the plugin manager you are using.
+
+For vim-plug:
+    ` Plug 'JoZie/denite-make'`
+
+For dein.vim:
+   `call dein#add('JoZie/denite-make')'`
+
+==============================================================================
+CONFIGURATION 						*denite-make-config*
+
+	*STUB*
+
+==============================================================================
+USAGE 							*denite-make-usage*
+
+	*STUB*
+
+==============================================================================
+FEEDBACK 						*denite-make-feedback*
+
+|denite-make| is open sourced at https://github.com/JoZie/denite-make.
+Feel free to open an issue when you get any problem.
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:noet:fen:
