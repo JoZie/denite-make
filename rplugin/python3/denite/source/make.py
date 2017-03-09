@@ -107,7 +107,7 @@ class Source(Base):
 
     def __convert(self, context, line):
         clean_line = re.sub('(/tmp/)*denite-make-wrapper.sh', self.vars['command'], line)
-        clean_line = re.sub('^\d+:', '', clean_line)
+        clean_line = re.sub('^(\d+:)+', '', clean_line)
 
         match = self.vars['regex_err'].search( line )
         if match:
