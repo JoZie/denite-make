@@ -42,24 +42,29 @@ each one is separated by a colon ':'.
 Note: Since denite.nvim sources are separated by space it is required that all
 spaces in the arguments are escaped.
 
-    1. Make setup (pre-command)
+1. Make setup (pre-command):
+    
     This argument specifies a command or an series of commands that will run
     just before the make command. An use case would be to load environment
     modules necessary for make. To work correctly the pre-command has to end
     with a valid expression that enables the combination of shell commands
     e.g. && or ||.
 
-    2. Make arguments
+2. Make arguments:
+
     If specified this arguments are passed directly to the make command. An
     example would be a call to `make -j5 install` . For more options see the
     man page or help of make.
 
-    3. Make directory (build directory)
+3. Make directory (build directory):
+
     If provided, this option specifies the directory the make command is
     executed in. If not, the current directory is used.
 
 A call to *denite-make* with all options provided could look like:
-    `:DeniteProjectDir make:module\ load\ gcc\ &&:-j5:build`
+```
+    :DeniteProjectDir make:module\ load\ gcc\ &&:-j5:build
+```
 
 ## Configuration ##
 
