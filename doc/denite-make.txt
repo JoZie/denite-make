@@ -1,4 +1,4 @@
-*denite-make.txt*                              An async make source for |denite|
+*denite-make.txt*                              An async make source for denite.nvim
 
 Version: 0.1
 Author:  <Johannes Ziegenbalg at gmail.com>
@@ -8,15 +8,15 @@ CONTENTS 						*denite-make-contents*
 
 1. Introduction			|denite-make-intro|
 2. Install 			|denite-make-install|
-3. Configuration 		|denite-make-config|
-4. Usage 			|denite-make-usage|
+3. Usage 			|denite-make-usage|
+4. Configuration 		|denite-make-config|
 5. Feedback 			|denite-make-feedback|
 
 ==============================================================================
 INTRODUCTION 						*denite-make-intro*
 
 |denite-make| is an source for *dein.nvim*
-It provdes an interface to GNU make. Therefore it utilizes the capabilities
+It provides an interface to GNU make. Therefore it utilizes the capabilities
 of *denite.nvim* to execute `make` in an asynchronously and display the output
 in the *denite* buffer.
 
@@ -27,7 +27,7 @@ Note: |denite-make| requires an existing installation of *dein.nvim* which can
 be found at https://github.com//Shougo/denite.nvim.
 
 For installation just add the following line to your (N)Vim startup file,
-depending on the plugin manager you are using.
+depending on the plug-in manager you are using.
 
 For vim-plug:
     ` Plug 'JoZie/denite-make'`
@@ -36,12 +36,37 @@ For dein.vim:
    `call dein#add('JoZie/denite-make')'`
 
 ==============================================================================
-CONFIGURATION 						*denite-make-config*
+USAGE 							*denite-make-usage*
 
-	*STUB*
+A Make command in the current directory can be executed by using `make` as
+`:Denite` source. This will show the complete output in the |denite| buffer.
+
+The |denite-make| source can also be called with three arguments. In |denite|
+each one is separated by a colon ':'.
+Note: Since |denite| sources are separated by space it is required that all
+spaces in the arguments are escaped.
+
+    1. Make setup (pre-command) ~
+    This argument specifies a command or an series of commands that will run
+    just before the make command. An use case would be to load environment
+    modules necessary for make. To work correctly the pre-command has to end
+    with a valid expression that enables the combination of shell commands
+    e.g. && or ||.
+
+    2. Make arguments~
+    If specified this arguments are passed directly to the make command. An
+    example would be a call to `make -j5 install` . For more options see the
+    man page or help of make.
+
+    3. Make directory (build directory)~
+    If provided, this option specifies the directory the make command is
+    executed in. If not, the current directory is used.
+
+A call to |denite-make| with all options provided could look like:
+    `:DeniteProjectDir make:module\ load\ gcc\ &&:-j5:build`
 
 ==============================================================================
-USAGE 							*denite-make-usage*
+CONFIGURATION 						*denite-make-config*
 
 	*STUB*
 
