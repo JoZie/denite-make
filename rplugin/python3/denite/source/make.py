@@ -125,8 +125,8 @@ class Source(Base):
                         message['col'] ),
                     'abbr' : clean_line,
                     'action__path' : message['full_file'],
-                    'action__line ': message['line'],
-                    'action__col ': message['col']
+                    'action__line' : (message['line']),
+                    'action__col' : (message['col'])
             }
 
         if self.__last_message['following_lines'] > 0:
@@ -139,8 +139,8 @@ class Source(Base):
                         self.__last_message['col'] ),
                     'abbr' : clean_line,
                     'action__path' : self.__last_message['full_file'],
-                    'action__line ': self.__last_message['line'],
-                    'action__col ': self.__last_message['col']
+                    'action__line' : (self.__last_message['line']),
+                    'action__col' : (self.__last_message['col'])
             }
 
         match = self.vars['regex_enter'].search( line )
@@ -151,7 +151,8 @@ class Source(Base):
         # return None
         return {
             'word' : clean_line,
-            'abbr' : clean_line
+            'abbr' : clean_line,
+            'action__path' : ''
         }
 
     def __create_make_wrapper(self):
