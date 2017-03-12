@@ -15,8 +15,6 @@ from denite.process import Process
 
 # TODO:
 # syntax highliting
-# self.vars in context
-# make resume work correctly
 # write filter
 
 # Test Test Test!
@@ -31,9 +29,6 @@ class Source(Base):
         self.vars = {
             'shell' : ['zsh', '-c'],
             'command' : "make",
-            'build_setup' : "",
-            'build_opts' : "",
-            'build_dir' : "",
 
             'regex_enter' : re.compile(
                     "(\d+:)*(?P<process>\d+:).*"
@@ -51,21 +46,20 @@ class Source(Base):
         self.__dir_map = {}
         self.__wrapper = '/tmp/denite-make-wrapper.sh'
         self.__last_message = { 'following_lines' : 0 }
-        self.__err_numer = 0
 
     def on_init(self, context):
         context['__proc'] = None
         self.__create_make_wrapper()
 
-        self.vars['build_setup'] = context['args'][0] if len(
+        context['__precommand'] = context['args'][0] if len(
             context['args']) > 0 else ""
 
-        self.vars['build_opts'] = context['args'][1] if len(
+        context['__make_args'] = context['args'][1] if len(
             context['args']) > 1 else ""
 
         directory = context['args'][2] if len(
             context['args']) > 2 else context['path']
-        self.vars['build_dir'] = abspath(self.vim, directory)
+        context['__make_dir'] = abspath(self.vim, directory)
 
     def on_close(self, context):
         if context['__proc']:
@@ -75,13 +69,12 @@ class Source(Base):
             os.remove(self.__wrapper)
 
     def gather_candidates(self, context):
-        # return [ { 'word' : self.vars['build_dir'] } ]
         if context['__proc']:
             return self.__async_gather_candidates(context, 0.03)
 
-        directory = self.vars['build_dir']
+        directory = context['__make_dir']
         args = self.vars['shell']
-        command = self.vars['build_setup'] + ' ' + self.__wrapper + ' ' + self.vars['build_opts']
+        command = context['__precommand'] + ' ' + self.__wrapper + ' ' + context['__make_args']
         args.append(command)
         context['__proc'] = Process(args, context, directory)
 
@@ -115,7 +108,6 @@ class Source(Base):
             err_dir = self.__dir_map[message['process']]
             message['full_file'] = path.relpath(err_dir + "/" + message['file'], context['path'])
             message['following_lines'] = 2
-            self.__err_numer += 1
             self.__last_message = message
             return {
                     'word' : '[{0}] {1}:{2}:{3}'.format(
