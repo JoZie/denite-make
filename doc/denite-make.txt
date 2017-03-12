@@ -15,15 +15,24 @@ CONTENTS 						*denite-make-contents*
 ==============================================================================
 INTRODUCTION 						*denite-make-intro*
 
-|denite-make| is an source for *dein.nvim*
-It provides an interface to GNU make. Therefore it utilizes the capabilities
-of *denite.nvim* to execute `make` in an asynchronously and display the output
-in the *denite* buffer.
+|denite-make| is an source for dein.nvim
+It provides an interface to GNU Make. Therefore it utilizes the capabilities
+of denite.nvim to execute `make` in an asynchronously and display the output
+in the |denite| buffer.
+
+|denite-make| also supports parsing the output of multiprocess builds (e.g.
+`make -j 4`). Therefore it uses a script that wraps the make command. This has
+the advantage that the relative file paths of compiler messages can be
+matched correctly.
+
+It is also possible to modify the shell wrapper for the make command. This
+opens the possibility to use shell specific commands or settings as make
+prerequisites.
 
 ==============================================================================
 INSTALL 						*denite-make-install*
 
-Note: |denite-make| requires an existing installation of *dein.nvim* which can
+Note: |denite-make| requires an existing installation of dein.nvim which can
 be found at https://github.com//Shougo/denite.nvim.
 
 For installation just add the following line to your (N)Vim startup file,
