@@ -27,7 +27,7 @@ class Source(Base):
         self.name = 'make'
         self.kind = 'file'
         self.vars = {
-            'shell' : ['zsh', '-c'],
+            'shell' : ['bash', '-c'],
             'command' : "make",
 
             'regex_enter' : re.compile(
@@ -47,6 +47,7 @@ class Source(Base):
         self.__wrapper = '/tmp/denite-make-wrapper.sh'
         self.__last_message = { 'following_lines' : 0 }
 
+
     def on_init(self, context):
         context['__proc'] = None
         self.__create_make_wrapper()
@@ -61,6 +62,12 @@ class Source(Base):
             context['args']) > 2 else context['path']
         context['__make_dir'] = abspath(self.vim, directory)
 
+        context['__command'] = '{} {} {}'.format(
+             context['__precommand'],
+             self.__wrapper,
+             context['__make_args'] )
+
+
     def on_close(self, context):
         if context['__proc']:
             context['__proc'].kill()
@@ -68,17 +75,17 @@ class Source(Base):
         if path.exists(self.__wrapper):
             os.remove(self.__wrapper)
 
+
     def gather_candidates(self, context):
         if context['__proc']:
             return self.__async_gather_candidates(context, 0.03)
 
-        directory = context['__make_dir']
         args = self.vars['shell']
-        command = context['__precommand'] + ' ' + self.__wrapper + ' ' + context['__make_args']
-        args.append(command)
-        context['__proc'] = Process(args, context, directory)
+        args.append( context['__command'] )
+        context['__proc'] = Process( args, context, context['__make_dir'] )
 
-        return self.__async_gather_candidates(context, 0.5)
+        return self.__async_gather_candidates(context, 0.1)
+
 
     def __async_gather_candidates(self, context, timeout):
         outs, err = context['__proc'].communicate(timeout=timeout)
@@ -97,6 +104,7 @@ class Source(Base):
             self.__convert(context, x) for x in outs
         ]
         return [ c for c in candidates if c is not None ]
+
 
     def __convert(self, context, line):
         clean_line = re.sub('(/tmp/)*denite-make-wrapper.sh', self.vars['command'], line)
@@ -117,8 +125,8 @@ class Source(Base):
                         message['col'] ),
                     'abbr' : clean_line,
                     'action__path' : message['full_file'],
-                    'action__line' : (message['line']),
-                    'action__col' : (message['col'])
+                    'action__line' : message['line'],
+                    'action__col' : message['col']
             }
 
         if self.__last_message['following_lines'] > 0:
@@ -131,8 +139,8 @@ class Source(Base):
                         self.__last_message['col'] ),
                     'abbr' : clean_line,
                     'action__path' : self.__last_message['full_file'],
-                    'action__line' : (self.__last_message['line']),
-                    'action__col' : (self.__last_message['col'])
+                    'action__line' : self.__last_message['line'],
+                    'action__col' : self.__last_message['col']
             }
 
         match = self.vars['regex_enter'].search( line )
@@ -140,12 +148,12 @@ class Source(Base):
             message = match.groupdict()
             self.__dir_map[message['process']] = message['dir']
 
-        # return None
         return {
             'word' : clean_line,
             'abbr' : clean_line,
             'action__path' : ''
         }
+
 
     def __create_make_wrapper(self):
         script = [
